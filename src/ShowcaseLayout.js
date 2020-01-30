@@ -88,7 +88,12 @@ export default class ShowcaseLayout extends React.Component {
         <div key={i} className={l.static ? "static" : ""}>
           {l.static && i === 0 &&
             <span id="room-layout">
-              <span id="room-title">Salles disponibles<span className="little">&nbsp; - Work in progress</span></span>
+              <span id="room-title">Salles disponibles<span className="little">&nbsp; - Work in progress</span><br />
+              <i><span className="little">Proof of concept<br />
+              Dashboard Bâtiment Saphir<br />
+              Déploiement capteurs T1 2020</span></i>
+              </span>
+              
               <img src="./images/marker2.png" id="marker-green" />
               <img src="./images/marker3.png" id="marker-red" />
               <img id="room-map" src="images/etage1.png" />
