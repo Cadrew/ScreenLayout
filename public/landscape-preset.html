@@ -144,10 +144,10 @@
         }
   
         function initAutocomplete() {
-          //routes(new google.maps.LatLng(43.489346, 5.341422), "Marseille, France");
-            $("#location-text").html("Marseille, France");
+          routes(new google.maps.LatLng(43.489346, 5.341422), "Marseille, France");
+            /*$("#location-text").html("Marseille, France");
             $("#route-result").html("27 minutes");
-            $("#road-text").html(via);
+            $("#road-text").html(via);*/
         }
   
         function timerIncrement() {
@@ -155,26 +155,26 @@
           if (idleTime >= 1) {
               $("#location-text, #route-result, #road-text").fadeOut(1000, function() {
                 if(idleTime == 1) {
-                  //routes(new google.maps.LatLng(43.489346, 5.341422), "Pertuis, France");
+                  routes(new google.maps.LatLng(43.489346, 5.341422), "Pertuis, France");
                   via = "via A51";
-                  $("#location-text").html("Pertuis, France");
+                  /*$("#location-text").html("Pertuis, France");
                   $("#route-result").html("27 minutes");
                   $("#road-text").html(via);
-                  $("#location-text, #route-result, #road-text").fadeIn(1000);
+                  $("#location-text, #route-result, #road-text").fadeIn(1000);*/
                 } else if(idleTime == 2) {
-                  //routes(new google.maps.LatLng(43.489346, 5.341422), "Aix-en-Provence, France");
+                  routes(new google.maps.LatLng(43.489346, 5.341422), "Aix-en-Provence, France");
                   via = "via D9 puis A51";
-                  $("#location-text").html("Aix-en-Provence, France");
+                  /*$("#location-text").html("Aix-en-Provence, France");
                   $("#route-result").html("18 minutes");
                   $("#road-text").html(via);
-                  $("#location-text, #route-result, #road-text").fadeIn(1000);
+                  $("#location-text, #route-result, #road-text").fadeIn(1000);*/
                 } else if(idleTime == 3) {
-                  //routes(new google.maps.LatLng(43.489346, 5.341422), "Marseille, France");
+                  routes(new google.maps.LatLng(43.489346, 5.341422), "Marseille, France");
                   via = "via A51";
-                  $("#location-text").html("Marseille, France");
+                  /*$("#location-text").html("Marseille, France");
                   $("#route-result").html("27 minutes");
                   $("#location-text, #route-result, #road-text").fadeIn(1000);
-                  $("#road-text").html(via);
+                  $("#road-text").html(via);*/
                   idleTime = 0;
                 }
               });
@@ -185,7 +185,7 @@
         var idleInterval = setInterval(timerIncrement, 10000); // 10 secondes     
       });
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUlSHcf3VHTfVWilX2BPamhP0oUbY4CjM&libraries=places&callback=initAutocomplete"
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClDFFY6OUZut6xzEybCQnzpIHbw4ryFnk&libraries=places&callback=initAutocomplete"
             async defer></script>
   <!--  -->
 	<div class="simpleslide100">
