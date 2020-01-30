@@ -540,3 +540,7 @@ Primary use:
   right: 0px;
   z-index: 10;
 }
+
+#timetable-18, #timetable-50 {
+  font-size: 30px;
+}

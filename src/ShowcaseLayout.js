@@ -111,7 +111,7 @@ export default class ShowcaseLayout extends React.Component {
           }
           {l.static && i === 5 &&
             <span id="mood">
-            <span id="mood-title">L'humeur du jour</span>
+            <span id="mood-title">L'humeur du jour<span className="little">&nbsp; - Work in progress</span></span>
               <div id="mood-package"></div>
               <div id="mood-package-result"></div>
               <table id="div-mood" >

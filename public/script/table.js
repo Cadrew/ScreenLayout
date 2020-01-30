@@ -39,7 +39,7 @@ var Polino = {
     displayTimetable : function(stopId, stopName, output) {
         var arrival = [];
         var departure = [];
-
+        
         for(var i = 0; i < Polino.Timetable.Hours.length; i++) {
             if(Polino.Timetable.Hours[i].StopId == stopId) {
                 var hours = Math.floor(Polino.Timetable.Hours[i].TheoricArrivalTime / 60);
@@ -58,9 +58,9 @@ var Polino = {
             timeString += departure[i] + "<br />";
         }
 
-        var contentString = '<div id="content">'+
-                                '<div id="stopInfo">'+
-                                    '</div>'+
+        var contentString = '<div class="content">'+
+                                '<div class="stopInfo">'+
+                                    '<div>'+
                                         timeString +
                                     '</div>'+
                                 '</div>'+
@@ -81,10 +81,11 @@ $(function() {
     $.when.apply($, promises).done(function() {
         $("#loader-background").hide();
         Polino.displayTimetable(1057710, "Galilée", "#timetable-18");
-        promises.push(Polino.getTimetable(2542, 2));
-        $.when.apply($, promises).done(function() {
+        var promises2 = [];
+        promises2.push(Polino.getTimetable(2542, 1));
+        $.when.apply($, promises2).done(function() {
             $("#loader-background").hide();
-            Polino.displayTimetable(1057710, "Marseille", "#timetable-50");
+            Polino.displayTimetable(602166, "Marseille", "#timetable-50");
         });
     });
 });

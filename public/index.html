@@ -168,14 +168,14 @@
         }   
       }
       function mappingRoom() {
-        for(var i = 0; i < presence_ids.length; i++) {
+        /*for(var i = 0; i < presence_ids.length; i++) {
             if(presence_ids[i].id === "motion-meteo1") {
                 if(Date.now() >= presence_ids[i].timestamp + 10000) //10s
                     $('#marker-green').css('left', 810).css('top', 515).show();
                 else
                     $('#marker-red').css('left', 810).css('top', 515).show();
             }
-        }
+        }*/
       }
       function refreshAzure() {
           $.ajax({
@@ -279,5 +279,12 @@
         frames['twitter-widget-0'].contentDocument.head.appendChild(cssLink);
         clearInterval(intervalID);
     }
+
+    var refreshID = setInterval(refreshPage, 600000); //10 minutes
+
+    function refreshPage() {
+        window.location.reload();
+    }
 </script>
+<div id="mainback" style="position: fixed; background-color: #0066a1; top: 0px; bottom: 0px; left: 0px; right: 0px; z-index: -1;"></div>
 </html>
