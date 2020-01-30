@@ -30,6 +30,16 @@ if(typeof(window.location.href.split("?")[1]) !== "undefined") {
     ];
   }
 }
+//Temporaire
+components = [
+  { id: 0, pos: '0;0;8;22' }, //x;y;w;h
+  { id: 1, pos: '8;0;4;2' },
+  { id: 2, pos: '8;2;4;10' },
+  { id: 3, pos: '8;12;4;10' },
+  { id: 4, pos: '0;22;4;5' },
+  { id: 5, pos: '4;22;4;5' },
+  { id: 6, pos: '8;22;4;5' },
+];
 
 
 export default class ShowcaseLayout extends React.Component {
