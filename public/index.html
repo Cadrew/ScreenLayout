@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="icon" href="./images/icons/saphir.png">
+	<link rel="manifest" href="manifest.json">
+	<link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <!--<link rel="stylesheet" type="text/css" href="example-styles.css">-->
+    <title>Dashboard Saphir</title>
+    <style>
+    @font-face {
+        font-family: 'Stag Sans Light';
+        src: url("./fonts/Atos/StagSans-Light-Cy-Web.eot");
+        src: local("?"), url("./fonts/Atos/StagSans-Light-Cy-Web.woff") format("woff");
+        font-style: normal;
+        font-weight: 200;
+    }
+    
+    @font-face {
+        font-family: 'Stag Sans Light Italic';
+        src: url("./fonts/Atos/StagSans-LightItalic-Cy-Web.eot");
+        src: local("?"), url("./fonts/Atos/StagSans-LightItalic-Cy-Web.woff") format("woff");
+        font-style: italic;
+        font-weight: 200;
+    }
+    
+    @font-face {
+        font-family: 'Stag Sans Book';
+        src: url("./fonts/Atos/StagSans-Book-Cy-Web.eot");
+        src: local("?"), url("./fonts/Atos/StagSans-Book-Cy-Web.woff") format("woff");
+        font-style: normal;
+        font-weight: 400;
+    }
+    
+    @font-face {
+        font-family: 'Stag Sans Medium';
+        src: url("./fonts/Atos/StagSans-Medium-Cy-Web.eot");
+        src: local("?"), url("./fonts/Atos/StagSans-Medium-Cy-Web.woff") format("woff");
+        font-style: normal;
+        font-weight: 400;
+    }
+    
+    @font-face {
+        font-family: 'Stag Sans Semibold';
+        src: url("./fonts/Atos/StagSans-Semibold-Cy-Web.eot");
+        src: local("?"), url("./fonts/Atos/StagSans-Semibold-Cy-Web.woff") format("woff");
+        font-style: normal;
+        font-weight: 700;
+    }
+    
+    @font-face {
+        font-family: 'Stag Light';
+        src: url("./fonts/Atos/Stag-Light-Cy-Web.eot");
+        src: local("?"), url("./fonts/Atos/Stag-Light-Cy-Web.woff") format("woff");
+        font-style: normal;
+        font-weight: 200;
+    }
+    
+    @font-face {
+        font-family: 'Stag Medium';
+        src: url("./fonts/Atos/Stag-Medium-Cy-Web.eot");
+        src: local("?"), url("./fonts/Atos/Stag-Medium-Cy-Web.woff") format("woff");
+        font-style: normal;
+        font-weight: 400;
+    }
+    body > div.size1.overlay1 > div > h3 {
+        font-family: "Stag Medium";
+    }
+    </style>
+</head>
+
+<body>
+	<noscript>
+		You need to enable JavaScript to run this app.
+	</noscript>
+	<div id="root"></div>
+</body>
+<script>
+  var green = true;
+  /*
+  $('#room-map').click(function(e) {
+      if(green)
+          $('#marker-green').css('left', e.pageX).css('top', e.pageY).show();
+      else
+          $('#marker-red').css('left', e.pageX).css('top', e.pageY).show();
+      green = !green;
+  });*/
+</script>
+<script>                
+  $(function() {
+      var moodValue1 = 0;
+      var moodValue3 = 0;
+      var cheat = 0;
+      var presence_ids = [];
+      var presence_timestamps = [];
+      var mapping = [{
+                        id : "motion-meteo1",
+                        top : 515,
+                        left : 810
+                    },
+                    {
+                        id : "motion-meteo2",
+                        top : 515,
+                        left : 810
+                    }
+    ];
+      intervalMoodID = setInterval(refreshAzure, 500);
+      function moodRefresh(data) {
+            data = JSON.parse(data);
+            moodValue1 = 0;
+            moodValue3 = 0;
+            var stop = false;
+            for(var i = 0; i < data.length; i++) {
+                if(typeof(data[i]["moodData"]) === "undefined" || data[i]["moodData"] == null)
+                    continue;
+                if(typeof(data[i]["moodData"]["1"]) !== "undefined") {
+                    moodValue1 = data[i]["moodData"]["1"];
+                    stop = true;
+                }
+                if(typeof(data[i]["moodData"]["3"]) !== "undefined") {
+                    moodValue3 = data[i]["moodData"]["3"];
+                    stop = true;
+                }
+                if(stop) break;
+            }                            
+            //console.log("Mood value");
+            var moodValue = moodValue1 + moodValue3 + cheat;
+            //console.log(moodValue);
+            $("#mood-value").html(moodValue);
+            if(moodValue > 1) $("#mood-txt").html("votants");
+            if(moodValue > 5) {
+                $("#mood-img").attr("src", "./images/smiley1.png");
+            } else if(moodValue > 0) {
+                $("#mood-img").attr("src", "./images/smiley2.png");
+            } else if(moodValue == 0) {
+                $("#mood-img").attr("src", "./images/smiley3.png");
+            } else if(moodValue >= -5) {
+                $("#mood-img").attr("src", "./images/smiley4.png");
+            } else {
+                $("#mood-img").attr("src", "./images/smiley5.png");
+            }
+      }
+      function roomRefresh(data) {
+        console.log(data);
+        data = JSON.parse(data);
+        var isFound = false;
+        
+        for(var i = 0; i < data.length; i++) {
+            if(typeof(data[i]["presence"]) === "undefined" || data[i]["presence"] == null)
+                continue;
+            else {
+                for(var j = 0; j < presence_ids.length; j++) {
+                    if(presence_ids[j].id === data[i]["deviceId"]) {
+                        presence_ids[j].timestamp = data[i]["timestamps"];
+                        isFound = true;
+                    }
+                }
+                if(!isFound) {
+                    presence_ids.push({id : data[i]["deviceId"], timestamp : data[i]["timestamps"]});
+                }
+
+            }
+        }   
+      }
+      function mappingRoom() {
+        for(var i = 0; i < presence_ids.length; i++) {
+            if(presence_ids[i].id === "motion-meteo1") {
+                if(Date.now() >= presence_ids[i].timestamp + 10000) //10s
+                    $('#marker-green').css('left', 810).css('top', 515).show();
+                else
+                    $('#marker-red').css('left', 810).css('top', 515).show();
+            }
+        }
+      }
+      function refreshAzure() {
+          $.ajax({
+              url: "https://poleinnofunctionapp.azurewebsites.net/api/GetLatestData?code=2t/OeRatGSlAarc4xYtK4FOasWh6jCa2am8zgZn4N8S9ankpr/e42Q==",
+              async : true
+          }).then(function(data) {
+              moodRefresh(data);
+              roomRefresh(data);
+              mappingRoom();
+          });
+      }
+
+      function refreshFiware() {
+          /*$.ajax({
+              url: "http://poleinno.fr:1026/v2/entities/?type=Mood&options=keyValues",
+              crossDomain: true,
+              async : true
+          }).then(function(data) {
+              data = JSON.parse(data);
+              moodValue1 = 0;
+              moodValue3 = 0;
+              var stop = false;
+              console.log(data);
+              for(var i = 0; i < data.length; i++) {
+                  if(typeof(data[i]["moodData"]) === "undefined" || data[i]["moodData"] == null)
+                      continue;
+                  if(typeof(data[i]["moodData"]["1"]) !== "undefined") {
+                      moodValue1 = data[i]["moodData"]["1"];
+                      stop = true;
+                  }
+                  if(typeof(data[i]["moodData"]["3"]) !== "undefined") {
+                      moodValue3 = data[i]["moodData"]["3"];
+                      stop = true;
+                  }
+                  if(stop) break;
+              }                            
+              //console.log("Mood value");
+              var moodValue = moodValue1 + moodValue3;
+              //console.log(moodValue);
+              $("#mood-value").html(moodValue);
+              if(moodValue > 1) $("#mood-txt").html("votants");
+              if(moodValue > 5) {
+                  $("#mood-img").attr("src", "./images/smiley1.png");
+              } else if(moodValue > 0) {
+                  $("#mood-img").attr("src", "./images/smiley2.png");
+              } else if(moodValue == 0) {
+                  $("#mood-img").attr("src", "./images/smiley3.png");
+              } else if(moodValue >= -5) {
+                  $("#mood-img").attr("src", "./images/smiley4.png");
+              } else {
+                  $("#mood-img").attr("src", "./images/smiley5.png");
+              }
+          });*/
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://poleinno.fr:1026/v2/entities/?type=Mood&options=keyValues", true);
+            xhr.onload = function () {
+                console.log(xhr.responseText);
+            };
+            xhr.send();
+      }
+
+    //cheat
+    document.addEventListener("keyup", event => {
+        if(event.isComposing || event.keyCode === 39) {
+            var moodValue = $("#mood-value").html();
+            moodValue = parseInt(moodValue) + 1;
+            //console.log(moodValue);
+            cheat++;
+            $("#mood-value").html(moodValue);
+            if(moodValue > 1) $("#mood-txt").html("votants");
+            if(moodValue > 5) {
+                $("#mood-img").attr("src", "./images/smiley1.png");
+            } else if(moodValue > 0) {
+                $("#mood-img").attr("src", "./images/smiley2.png");
+            } else if(moodValue == 0) {
+                $("#mood-img").attr("src", "./images/smiley3.png");
+            } else if(moodValue >= -5) {
+                $("#mood-img").attr("src", "./images/smiley4.png");
+            } else {
+                $("#mood-img").attr("src", "./images/smiley5.png");
+            }
+        }
+    });
+    
+  });
+</script>
+<script>
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script>
+    intervalID = setInterval(flashIframe, 100);
+
+    function flashIframe() {
+        if(typeof(frames['twitter-widget-0']) == "undefined") return;
+        var cssLink = document.createElement("link");
+        cssLink.href = "./style/twitter-widget-customized.css"; 
+        cssLink.rel = "stylesheet"; 
+        cssLink.type = "text/css"; 
+        frames['twitter-widget-0'].contentDocument.head.appendChild(cssLink);
+        clearInterval(intervalID);
+    }
+</script>
+</html>

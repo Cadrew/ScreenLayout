@@ -1,0 +1,243 @@
+<html>
+<head>
+    <title>Landscape</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->	
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+  <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+  <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+  <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!--===============================================================================================-->	
+      <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+  <!--===============================================================================================-->
+  <style>
+  @font-face {
+    font-family: 'Stag Sans Light';
+    src: url("./fonts/Atos/StagSans-Light-Cy-Web.eot");
+    src: local("?"), url("./fonts/Atos/StagSans-Light-Cy-Web.woff") format("woff");
+    font-style: normal;
+    font-weight: 200;
+  }
+  
+  @font-face {
+    font-family: 'Stag Sans Light Italic';
+    src: url("./fonts/Atos/StagSans-LightItalic-Cy-Web.eot");
+    src: local("?"), url("./fonts/Atos/StagSans-LightItalic-Cy-Web.woff") format("woff");
+    font-style: italic;
+    font-weight: 200;
+  }
+  
+  @font-face {
+    font-family: 'Stag Sans Book';
+    src: url("./fonts/Atos/StagSans-Book-Cy-Web.eot");
+    src: local("?"), url("./fonts/Atos/StagSans-Book-Cy-Web.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+  }
+  
+  @font-face {
+    font-family: 'Stag Sans Medium';
+    src: url("./fonts/Atos/StagSans-Medium-Cy-Web.eot");
+    src: local("?"), url("./fonts/Atos/StagSans-Medium-Cy-Web.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+  }
+  
+  @font-face {
+    font-family: 'Stag Sans Semibold';
+    src: url("./fonts/Atos/StagSans-Semibold-Cy-Web.eot");
+    src: local("?"), url("./fonts/Atos/StagSans-Semibold-Cy-Web.woff") format("woff");
+    font-style: normal;
+    font-weight: 700;
+  }
+  
+  @font-face {
+    font-family: 'Stag Light';
+    src: url("./fonts/Atos/Stag-Light-Cy-Web.eot");
+    src: local("?"), url("./fonts/Atos/Stag-Light-Cy-Web.woff") format("woff");
+    font-style: normal;
+    font-weight: 200;
+  }
+  
+  @font-face {
+    font-family: 'Stag Medium';
+    src: url("./fonts/Atos/Stag-Medium-Cy-Web.eot");
+    src: local("?"), url("./fonts/Atos/Stag-Medium-Cy-Web.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+  }
+  html {
+    zoom: 0.75;
+    overflow: hidden;
+  }
+  body > div.size1.overlay1 > div > h3 {
+    font-family: "Stag Medium";
+  }
+  .size1 {
+    height: 100%;
+  }
+</style>
+<body>
+    <script>
+        // This sample uses the Autocomplete widget to help the user select a
+        // place, then it retrieves the address components associated with that
+        // place, and then it populates the form fields with those details.
+        // This sample requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script
+        // src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+         
+         
+        var idleTime = 0;
+        // Bias the autocomplete object to the user's geographical location,
+        // as supplied by the browser's 'navigator.geolocation' object.
+        function geolocate() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                var geolocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                var circle = new google.maps.Circle(
+                    {center: geolocation, radius: position.coords.accuracy});
+                autocomplete.setBounds(circle.getBounds());
+                });
+            }
+        }
+
+        var via = "via A51"; //TODO: Automatiser avec API
+    
+        function routes(origin, destination) {
+            var origin1 = origin;
+            var destinationA = destination;
+            $("#location-text").html(destination);
+    
+            var service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [origin1],
+                destinations: [destinationA],
+                travelMode: 'DRIVING',
+                drivingOptions: {
+                    departureTime: new Date(Date.now() + 0)
+                },
+                /*transitOptions: TransitOptions,
+                unitSystem: UnitSystem,
+                avoidHighways: Boolean,
+                avoidTolls: Boolean,*/
+            }, callback);
+        }
+    
+        function callback(response, status) {
+              console.log(response.rows[0].elements[0].duration_in_traffic.text);          
+              $("#route-result").html(response.rows[0].elements[0].duration_in_traffic.text);
+              $("#road-text").html(via);
+              $("#location-text, #route-result, #road-text").fadeIn(1000);
+        }
+  
+        function initAutocomplete() {
+          //routes(new google.maps.LatLng(43.489346, 5.341422), "Marseille, France");
+            $("#location-text").html("Marseille, France");
+            $("#route-result").html("27 minutes");
+            $("#road-text").html(via);
+        }
+  
+        function timerIncrement() {
+          idleTime = idleTime + 1;
+          if (idleTime >= 1) {
+              $("#location-text, #route-result, #road-text").fadeOut(1000, function() {
+                if(idleTime == 1) {
+                  //routes(new google.maps.LatLng(43.489346, 5.341422), "Pertuis, France");
+                  via = "via A51";
+                  $("#location-text").html("Pertuis, France");
+                  $("#route-result").html("27 minutes");
+                  $("#road-text").html(via);
+                  $("#location-text, #route-result, #road-text").fadeIn(1000);
+                } else if(idleTime == 2) {
+                  //routes(new google.maps.LatLng(43.489346, 5.341422), "Aix-en-Provence, France");
+                  via = "via D9 puis A51";
+                  $("#location-text").html("Aix-en-Provence, France");
+                  $("#route-result").html("18 minutes");
+                  $("#road-text").html(via);
+                  $("#location-text, #route-result, #road-text").fadeIn(1000);
+                } else if(idleTime == 3) {
+                  //routes(new google.maps.LatLng(43.489346, 5.341422), "Marseille, France");
+                  via = "via A51";
+                  $("#location-text").html("Marseille, France");
+                  $("#route-result").html("27 minutes");
+                  $("#location-text, #route-result, #road-text").fadeIn(1000);
+                  $("#road-text").html(via);
+                  idleTime = 0;
+                }
+              });
+          }
+        }
+  
+      $(function() {
+        var idleInterval = setInterval(timerIncrement, 10000); // 10 secondes     
+      });
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUlSHcf3VHTfVWilX2BPamhP0oUbY4CjM&libraries=places&callback=initAutocomplete"
+            async defer></script>
+  <!--  -->
+	<div class="simpleslide100">
+      <div class="simpleslide100-item bg-img1" style="background-image: url('images/bg04.jpg');"></div>
+      <div class="simpleslide100-item bg-img1" style="background-image: url('images/bg05.jpg');"></div>
+      <div class="simpleslide100-item bg-img1" style="background-image: url('images/bg06.jpg');"></div>
+    </div>
+  
+	<span style="position: absolute; top: 10px; left: 10px; z-index: 100; width: 300px; color: white; font-size: 30px; font-family: 'Stag Medium';">Temps de trajet</span>
+  <div id="background"></div>
+    <div class="size1 overlay1">
+      <!--  -->
+      <div class="size1 flex-col-c-m p-l-15 p-r-15 p-t-50 p-b-50">
+        <h3 class="l1-txt1 txt-center p-b-25" id="location-text">
+          
+        </h3>
+  
+        <p class="m2-txt1 txt-center p-b-48" id="road-text">
+          
+        </p>
+
+        <p class="m2-txt1 txt-center p-b-48" id="route-result">
+          
+        </p>
+          
+        </p>
+      </div>
+    </div>
+  
+  <!--===============================================================================================-->
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!--===============================================================================================-->
+    <script src="vendor/select2/select2.min.js"></script>
+  <!--===============================================================================================-->
+    <script src="vendor/tilt/tilt.jquery.min.js"></script>
+    <script >
+      $('.js-tilt').tilt({
+        scale: 1.1
+      })
+    </script>
+  <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+  <!--=========================== ROUTES ===========================-->
+  <div id="filter"></div>
+
+  <div id="locationField">        
+        <input id="location-text" value="" disabled/>
+        
+      <input id="route-result" value="" disabled/>
+      </div>
+
+</body>
+</html>
+  

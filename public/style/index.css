@@ -1,0 +1,90 @@
+#loader-background {
+    z-index: 1000;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(203, 203, 203, 0.5);
+}
+
+#loader {
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 48%;
+    left: 48%;
+  }
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#close-btn {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+#open-sidebar {
+    cursor: pointer;
+    position: absolute;
+    top: 35%;
+    left: 0px;
+    z-index: 10;
+    background: #FFFFFF;
+    border-radius: 2%;
+    box-shadow: 0px 0px 10px #000000;
+}
+
+#sidebar {
+    position: absolute;
+    top: 30%;
+    left: -100px;
+    width: 400px;
+    height: 200px;
+    z-index: 10;
+    background: #FFFFFF;
+    border-radius: 2%;
+    box-shadow: 0px 0px 10px #000000;
+}
+
+#sidebar h2 {
+    text-align: right;
+    margin-right: 65px;
+}
+
+#select-line {
+    position: absolute;
+    top: 75px;
+    right: 55px;
+}
+
+#select-direction {
+    position: absolute;
+    top: 115px;
+    right: 65px;
+}
+
+#map {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+}
+
+a[href^="http://maps.google.com/maps"],
+a[href^="https://maps.google.com/maps"],
+a[href^="https://www.google.com/maps"],
+a[href^="https://www.google.com/intl/fr-FR_US/help/terms_maps.html"] {
+    display: none !important;
+}
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
