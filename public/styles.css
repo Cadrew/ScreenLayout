@@ -170,11 +170,15 @@ iframe {
   filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=0, Color='#008000')";
 }
 
-#room-map {
+#room-map1, #room-map2 {
   position: absolute;
   width: 60%;
   top: 10%;
   left: 20%;
+}
+
+#room-map2 {
+  display: none;
 }
 
 .little {

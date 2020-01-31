@@ -83,7 +83,7 @@
 <script>
   var green = true;
   /*
-  $('#room-map').click(function(e) {
+  $('#room-map1').click(function(e) {
       if(green)
           $('#marker-green').css('left', e.pageX).css('top', e.pageY).show();
       else
@@ -284,6 +284,16 @@
 
     function refreshPage() {
         window.location.reload();
+    }
+
+    var mapID = setInterval(refreshMap, 10000); //10 secondes
+    var etage = ["#room-map1", "#room-map2"];
+    var id = -1;
+    function refreshMap() {
+        $(etage[id < 0 ? 0 : id]).fadeOut(1000, function() {
+            id*=-1;
+            $(etage[id < 0 ? 0 : id]).fadeIn(1000);
+        });
     }
 </script>
 <div id="mainback" style="position: fixed; background-color: #0066a1; top: 0px; bottom: 0px; left: 0px; right: 0px; z-index: -1;"></div>

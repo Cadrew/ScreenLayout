@@ -96,7 +96,8 @@ export default class ShowcaseLayout extends React.Component {
               
               <img src="./images/marker2.png" id="marker-green" />
               <img src="./images/marker3.png" id="marker-red" />
-              <img id="room-map" src="images/etage1.png" />
+              <img id="room-map1" src="images/etage1.png" />
+              <img id="room-map2" src="images/etage2.png" />
             
             </span>
           }
